@@ -1,0 +1,123 @@
+openapi: 3.0.0
+info:
+  description: This API receives reading events from stock market
+  version: "1.0.0"
+  title: Reading API
+  contact:
+    email: baobao5347@gmail.com
+tags:
+  - name: stock price reading. stock news reading
+    description: operations related to stock price reading
+paths:
+  /news:
+    get:
+      tags:
+        - devices
+      summary: gets new stock news readings
+      operationId: app.get_stock_news_readings
+      description: Gets stock news readings added after a timestamp
+      parameters:
+        - name: timestamp
+          in: query
+          description: Limits the number of items on a page
+          schema:
+            type: string
+            format: date-time
+            example: 2016-08-29T09:12:33.001Z
+      responses:
+        "200":
+          description: Successfully returned a list of stock news events
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/NewsReading"
+        "400":
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+
+  /open-price:
+    get:
+      tags:
+        - devices
+      summary: gets new stock price readings
+      operationId: app.get_stock_price_readings
+      description: Gets stock price readings added after a timestamp
+      parameters:
+        - name: timestamp
+          in: query
+          description: Limits the number of items on a page
+          schema:
+            type: string
+            format: date-time
+            example: 2016-08-29
+      responses:
+        "200":
+          description: Successfully returned a list of stock price events
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/PriceReading"
+        "400":
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+
+components:
+  schemas:
+    PriceReading:
+      type: object
+      required:
+        - date
+        - stock_code
+        - open_price
+      properties:
+        date:
+          type: string
+          format: date-time
+          example: "2016-08-29T09:12:33.001Z"
+        stock_code:
+          type: string
+          example: "AAPL"
+        open_price:
+          type: number
+          example: 136.23
+    NewsReading:
+      type: object
+      required:
+        - date
+        - stock_code
+        - news
+        - source
+      properties:
+        date:
+          type: string
+          format: date-time
+          example: "2016-08-29T09:12:33.001Z"
+        stock_code:
+          type: string
+          example: "AAPL"
+        news:
+          type: string
+          example: "Apple plans to build driverless car."
+        source:
+          type: string
+          example: "BBC"
+# servers:
+#   # Added by API Auto Mocking Plugin
+#   - description: SwaggerHub API Auto Mocking
+#     url: https://virtserver.swaggerhub.com/Baobao-bao/reading/1.0.0

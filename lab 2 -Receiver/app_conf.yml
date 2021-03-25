@@ -1,0 +1,13 @@
+version: 1
+eventstore1:
+  url: http://localhost:8090/readings/open-price
+eventstore2:
+  url: http://localhost:8090/readings/news
+eventstore3:
+  url: http://localhost:8090/open-price
+eventstore4:
+  url: http://localhost:8090/news
+events:
+  hostname: services-3855.eastus.cloudapp.azure.com
+  port: 9092
+  topic: events

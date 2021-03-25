@@ -1,0 +1,115 @@
+openapi: 3.0.0
+info:
+  description: This API receives reading events from stock market
+  version: "1.0.0"
+  title: Reading API
+  contact:
+    email: baobao5347@gmail.com
+tags:
+  - name: stock price reading. stock news reading
+    description: operations related to stock price reading
+paths:
+  /readings/news:
+    post:
+      tags:
+        - stock news reading
+      summary: reports a stock news reading
+      operationId: app.read_stock_news
+      description: Adds a new stock news to the system
+      responses:
+        "201":
+          description: successfully added a news for today
+        "400":
+          description: bad input parameter
+        "409":
+          description: an existing news already exists
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/NewsReading"
+        description: Reading item to add
+  /readings/open-price:
+    post:
+      tags:
+        - stock price reading
+      summary: reports a stock open price reading
+      operationId: app.read_stock_open_price
+      description: Adds a new stock open price to the system
+      responses:
+        "201":
+          description: successfully added a open price for today
+        "400":
+          description: bad input parameter
+        "409":
+          description: an existing item already exists
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PriceReading"
+        description: Reading item to add
+  # /readings/close-price:
+  #   post:
+  #     tags:
+  #       - stock price reading
+  #     summary: reports a stock close price reading
+  #     operationId: app.read_stock_close_price
+  #     description: Adds a new stock open price to the system
+  #     responses:
+  #       "201":
+  #         description: successfully added a close price for today
+  #       "400":
+  #         description: invalid input, object invalid
+  #       "409":
+  #         description: an existing item already exists
+  #     requestBody:
+  #       content:
+  #         application/json:
+  #           schema:
+  #             $ref: "#/components/schemas/PriceReading"
+  #       description: Inventory item to add
+components:
+  schemas:
+    PriceReading:
+      type: object
+      required:
+        - date
+        - stock_code
+        - open_price
+      properties:
+        date:
+          type: string
+          format: date-time
+          example: "2016-08-29T09:12:33.001Z"
+        stock_code:
+          type: string
+          example: "AAPL"
+        open_price:
+          type: number
+          example: 136.23
+    NewsReading:
+      type: object
+      required:
+        - date
+        - stock_code
+        - news
+        - source
+      properties:
+        date:
+          type: string
+          format: date-time
+          example: "2016-08-29T09:12:33.001Z"
+        stock_code:
+          type: string
+          example: "AAPL"
+        news:
+          type: string
+          example: "Apple plans to build driverless car."
+        source:
+          type: string
+          example: "BBC"
+# servers:
+#   # Added by API Auto Mocking Plugin
+#   - description: SwaggerHub API Auto Mocking
+#     url: https://virtserver.swaggerhub.com/Baobao-bao/reading/1.0.0
