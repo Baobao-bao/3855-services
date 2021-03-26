@@ -1,12 +1,9 @@
 connexion==2.7.0
 swagger-ui-bundle==0.0.8
 APScheduler==3.6.3
-<<<<<<< HEAD
 logging
 datetime
 yaml
 json
 requests
-=======
 flask-cors==3.0.10
->>>>>>> adf4f472b2980f919a1f20b45f79cfab6654576c
