@@ -3,8 +3,8 @@ from connexion import NoContent
 from swagger_ui_bundle import swagger_ui_path
 from pykafka import KafkaClient 
 from pykafka.common import OffsetType 
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
+
+
 from base import Base
 import logging
 import logging.config
@@ -20,9 +20,7 @@ logger = logging.getLogger("basicLogger")
 handler = logging.StreamHandler()
 handler.setLevel(logging.INFO)
 
-DB_ENGINE = create_engine(f'mysql+pymysql://{app_config["datastore"]["user"]}:'f'{app_config["datastore"]["password"]}@{app_config["datastore"]["hostname"]}:'f'{app_config["datastore"]["port"]}/{app_config["datastore"]["db"]}')
-Base.metadata.bind = DB_ENGINE
-DB_SESSION = sessionmaker(bind=DB_ENGINE)
+
 
 def get_stock_news_reading(index):
 

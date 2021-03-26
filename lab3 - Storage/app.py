@@ -159,7 +159,6 @@ app = connexion.FlaskApp(__name__, specification_dir='')
 app.add_api("openapi.yaml",strict_validation=True,validate_responses=True)
 
 if __name__ == "__main__":
-    app.run(port=8090,debug=True)
     t1 = Thread(target=process_messages)
     t1.setDaemon(True)
     logging.info("Main    : before running thread")
@@ -167,3 +166,4 @@ if __name__ == "__main__":
     logging.info("Main    : before joinning thread")
     t1.join()
     logging.info("Main    : all done!")
+    app.run(port=8090,debug=True)
