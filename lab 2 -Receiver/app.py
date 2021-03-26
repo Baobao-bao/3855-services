@@ -1,19 +1,20 @@
 import connexion 
 from connexion import NoContent
-import json
 from swagger_ui_bundle import swagger_ui_path
+import requests
+from pykafka import KafkaClient
+
 import threading
 import yaml
 import logging
+import json
 import logging.config
-import requests
 import datetime
-from pykafka import KafkaClient
 
-with open('c:/Users/Bao/Desktop/3855/lab 2 -Receiver/app_conf.yml', 'r') as f:
+with open('app_conf.yml', 'r') as f:
     app_config = yaml.safe_load(f.read())
 
-with open('c:/Users/Bao/Desktop/3855/lab 2 -Receiver/log_conf.yml', 'r') as f:
+with open('log_conf.yml', 'r') as f:
     log_config = yaml.safe_load(f.read())
     logging.config.dictConfig(log_config)
 logger = logging.getLogger(__name__)
@@ -24,7 +25,7 @@ MAX_EVENT = 10
 EVENT_FILE = "events.json"
 
 def limit_data():
-    with open('c:/Users/Bao/Desktop/3855/lab 2 -Receiver/'+ EVENT_FILE,"r") as file:
+    with open( EVENT_FILE,"r") as file:
         content = file.read()
         if len(content) == 0:
             print("hi")
@@ -37,10 +38,6 @@ def limit_data():
             return data
 
 def read_stock_open_price(body):
-    # data = limit_data()
-    # data.insert(0,body)
-    # with open('c:/Users/Bao/Desktop/3855/lab 2 -Receiver/'+EVENT_FILE,"w") as file:
-    #     json.dump(data, file)
     date = body["date"]
     my_format = logging.Formatter(f'Stored event "eventstore1"  request with a unique id of {date}')
     handler.setFormatter(my_format)
@@ -65,10 +62,6 @@ def read_stock_open_price(body):
     return NoContent,201
 
 def read_stock_news(body):
-    # data = limit_data()
-    # data.insert(0,body)
-    # with open('c:/Users/Bao/Desktop/3855/lab 2 -Receiver/'+ EVENT_FILE,"w") as file:
-    #     json.dump(data, file)
     date = body["date"]
     my_format = logging.Formatter(f'Stored event "eventstore1"  request with a unique id of {date}')
     handler.setFormatter(my_format)

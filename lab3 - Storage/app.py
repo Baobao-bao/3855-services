@@ -1,8 +1,11 @@
 import connexion 
 from connexion import NoContent
-
+from swagger_ui_bundle import swagger_ui_path
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
+from pykafka import KafkaClient 
+from pykafka.common import OffsetType 
+
 from base import Base
 from stock_open_price import StockOpenPrice
 from stock_news import StockNews
@@ -11,16 +14,13 @@ import logging
 import logging.config
 import yaml
 import json
-from pykafka import KafkaClient 
-from pykafka.common import OffsetType 
 from threading import Thread 
 
-base_url= "c:/Users/Bao/Desktop/3855/lab3 - Storage/"
 
-with open(base_url + "app_conf.yml", "r") as f:
+with open("app_conf.yml", "r") as f:
     app_config = yaml.safe_load(f.read())
 
-with open(base_url + "log_conf.yml", "r") as f:
+with open("log_conf.yml", "r") as f:
     log_config = yaml.safe_load(f.read())
     logging.config.dictConfig(log_config)
 
@@ -28,10 +28,6 @@ with open(base_url + "log_conf.yml", "r") as f:
 logger = logging.getLogger("basicLogger")
 handler = logging.StreamHandler()
 handler.setLevel(logging.INFO)
-# my_format = logging.Formatter('Received event "eventstore1"  request with a unique id of %(process)d')
-# my_format2 = logging.Formatter('Returned event "eventstore2" response (Id: %(process)d) with status 201')
-# handler.setFormatter(my_format)
-# logger.addHandler(handler)
 
 
 
@@ -42,54 +38,8 @@ DB_SESSION = sessionmaker(bind=DB_ENGINE)
 logger.info("Connecting to DB: Hostname:services-3855.eastus.cloudapp.azure.com, Port: 3306.")
 
 
-# def read_stock_open_price(body):
-#     """ Receives a stock open price reading """
-
-#     session = DB_SESSION()
-
-#     open_price = StockOpenPrice(
-#                        body['stock_code'],
-#                        body['open_price'],
-#                        datetime.datetime.strptime(body["date"], '%Y-%m-%d'),)
-
-#     session.add(open_price)
-
-#     session.commit()
-#     session.close()
-
-#     date = body["date"]
-#     my_format = logging.Formatter(f'Stored event "eventstore1"  request with a unique id of {date}')
-#     handler.setFormatter(my_format)
-#     logger.info("finished storing stock open price to database.")
 
 
-
-#     return NoContent,201
-
-
-# def read_stock_news(body):
-#     """ Receives a stock news reading """
-
-#     session = DB_SESSION()
-
-#     stock_news = StockNews(
-#                    body['stock_code'],
-#                    body['news'],
-#                    body['source'],
-#                    datetime.datetime.strptime(body["date"], '%Y-%m-%d'))
-
-#     session.add(stock_news)
-
-#     session.commit()
-#     session.close()
-
-
-#     date = body["date"]
-#     my_format = logging.Formatter(f'Stored event "eventstore2"  request with a unique id of {date}')
-#     handler.setFormatter(my_format)
-#     logger.info("finished storing stock news to database.")
-
-#     return NoContent,201
 
 
 def get_stock_price_readings(timestamp):

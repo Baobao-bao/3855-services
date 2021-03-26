@@ -13,9 +13,7 @@ import json
 
 
 
-base_url= "c:/Users/Bao/Desktop/3855/Audit/"
-
-with open(base_url + "app_conf.yml", "r") as f:
+with open( "app_conf.yml", "r") as f:
     app_config = yaml.safe_load(f.read())
 
 logger = logging.getLogger("basicLogger")

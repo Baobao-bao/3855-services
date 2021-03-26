@@ -1,11 +1,7 @@
 import connexion 
 from connexion import NoContent
+from swagger_ui_bundle import swagger_ui_path
 
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
-from base import Base
-# from stock_open_price import StockOpenPrice
-# from stock_news import StockNews
 import datetime
 import logging
 import logging.config
@@ -16,12 +12,11 @@ from datetime import date
 import requests
 from datetime import datetime
 
-base_url= "c:/Users/Bao/Desktop/3855/Processor/"
 
-with open(base_url + "app_conf.yml", "r") as f:
+with open("app_conf.yml", "r") as f:
     app_config = yaml.safe_load(f.read())
 
-with open(base_url + "log_conf.yml", "r") as f:
+with open("log_conf.yml", "r") as f:
     log_config = yaml.safe_load(f.read())
     logging.config.dictConfig(log_config)
 
@@ -33,7 +28,7 @@ handler.setLevel(logging.INFO)
 
 
 def get_stats():
-    with open('c:/Users/Bao/Desktop/3855/Processor/data.json' ,"r") as file:
+    with open('data.json' ,"r") as file:
         data=json.load(file)
     return data[0], 200
 
@@ -54,7 +49,7 @@ def populate_stats():
     logger.info("Start Periodic Processing")
     # If the file doesn’t yet exist, use default values for the stats
     try:
-        with open('c:/Users/Bao/Desktop/3855/Processor/data.json' ,"r") as file:
+        with open('data.json' ,"r") as file:
             # content = file.read()
             # data = json.loads(content)
             data=json.load(file)
@@ -83,7 +78,7 @@ def populate_stats():
     if (price_res.status_code == 200 and news_res.status_code == 200 ):
         logger.info(stat_info)
         data.insert(0,stat_info)
-        with open('c:/Users/Bao/Desktop/3855/Processor/data.json' ,"w") as file:
+        with open('data.json' ,"w") as file:
             json.dump(data, file)
     else:
         logger.error("fail to get data from storage service.")
